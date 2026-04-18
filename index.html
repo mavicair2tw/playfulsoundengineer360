@@ -100,22 +100,16 @@
   .work-card.featured { grid-column: span 2; aspect-ratio: auto; min-height: 340px; }
   .featured .card-title { font-size: 32px; }
 
-  /* ── VIDEO SECTION ── */
-  #videos { padding: 0 3rem 8rem; max-width: 1200px; margin: 0 auto; }
-  .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; }
-  .video-item { position: relative; background: var(--smoke); overflow: hidden; }
-  .video-item .video-label { padding: 1.25rem 1.5rem; }
-  .video-item .video-label .card-category { font-size: 8px; letter-spacing: 0.35em; color: var(--ember); text-transform: uppercase; margin-bottom: 0.4rem; opacity: 0.8; }
-  .video-item .video-label .card-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; color: var(--cream); line-height: 1.2; }
-  .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
-  .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; filter: brightness(0.9); transition: filter 0.4s; }
-  .video-item:hover .video-wrapper iframe { filter: brightness(1); }
-  .video-placeholder { position: relative; padding-bottom: 56.25%; background: linear-gradient(135deg, #12100d, #1e1810); cursor: none; overflow: hidden; }
-  .video-placeholder:hover .vp-overlay { opacity: 0; }
-  .vp-overlay { position: absolute; inset: 0; background: rgba(10,8,6,0.3); transition: opacity 0.4s; display: flex; align-items: center; justify-content: center; }
-  .vp-play { width: 48px; height: 48px; border: 0.5px solid rgba(200,144,42,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-  .vp-play::after { content: ''; border-left: 14px solid var(--ember); border-top: 8px solid transparent; border-bottom: 8px solid transparent; margin-left: 4px; }
-  .vp-label { position: absolute; bottom: 1rem; left: 1rem; font-size: 8px; letter-spacing: 0.3em; color: var(--ash); text-transform: uppercase; }
+  /* ── SPOTIFY SECTION ── */
+  #spotify { padding: 0 3rem 8rem; max-width: 1200px; margin: 0 auto; }
+  .spotify-artist { border: 0.5px solid rgba(200,144,42,0.15); overflow: hidden; margin-bottom: 1.5px; }
+  .spotify-artist iframe { display: block; width: 100%; border: none; }
+  .spotify-tracks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; }
+  .spotify-track { background: var(--smoke); overflow: hidden; }
+  .spotify-track iframe { display: block; width: 100%; border: none; }
+  .spotify-track-label { padding: 1rem 1.25rem 1.25rem; }
+  .spotify-track-label .card-category { font-size: 8px; letter-spacing: 0.35em; color: var(--ember); text-transform: uppercase; margin-bottom: 0.35rem; opacity: 0.8; }
+  .spotify-track-label .card-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; color: var(--cream); line-height: 1.2; }
 
   /* ── TRIBUTE ── */
   #tribute { padding: 8rem 3rem; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 80px 1fr; gap: 3rem; align-items: start; border-top: 0.5px solid rgba(200,144,42,0.15); border-bottom: 0.5px solid rgba(200,144,42,0.15); }
@@ -304,37 +298,87 @@
 <!-- DIVIDER -->
 <div class="divider">
   <div class="divider-line"></div>
-  <div class="divider-mark">Listen &amp; Watch</div>
+  <div class="divider-mark">Listen on Spotify</div>
   <div class="divider-line"></div>
 </div>
 
-<!-- VIDEO SECTION — placeholder, YouTube IDs to be added -->
-<section id="videos">
+<!-- SPOTIFY SECTION -->
+<section id="spotify">
   <div class="section-header">
-    <h2 class="section-title">Video <em>Works</em></h2>
-    <span class="section-count">YouTube · Cinematic · Epoch of Life</span>
+    <h2 class="section-title">Music on <em>Spotify</em></h2>
+    <span class="section-count">PlayfulSoundEngineer360</span>
   </div>
-  <div class="video-grid">
-    <div class="video-item">
-      <div class="video-wrapper">
-        <!-- Replace VIDEO_ID_1 with actual YouTube video ID -->
-        <iframe src="about:blank" data-src="https://www.youtube.com/embed/VIDEO_ID_1?rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Video 1"></iframe>
-      </div>
-      <div class="video-label">
-        <div class="card-category">Epoch of Life</div>
-        <div class="card-title">Birth of Starlight</div>
+
+  <!-- Artist embed -->
+  <div class="spotify-artist">
+    <iframe src="https://open.spotify.com/embed/artist/3wNssuAFgx8ozrfBEsgCMs?utm_source=generator&theme=0"
+      height="352" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy" title="PlayfulSoundEngineer360 on Spotify"></iframe>
+  </div>
+
+  <!-- Individual album / track embeds -->
+  <div class="spotify-tracks">
+
+    <div class="spotify-track">
+      <iframe src="https://open.spotify.com/embed/search/Epoch%20of%20Life%20PlayfulSoundEngineer360?utm_source=generator&theme=0"
+        height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy" title="Epoch of Life"></iframe>
+      <div class="spotify-track-label">
+        <div class="card-category">Series · Cinematic</div>
+        <div class="card-title">Epoch of Life</div>
       </div>
     </div>
-    <div class="video-item">
-      <div class="video-wrapper">
-        <!-- Replace VIDEO_ID_2 with actual YouTube video ID -->
-        <iframe src="about:blank" data-src="https://www.youtube.com/embed/VIDEO_ID_2?rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Video 2"></iframe>
+
+    <div class="spotify-track">
+      <iframe src="https://open.spotify.com/embed/search/My%20Experience%20My%20Color%20PlayfulSoundEngineer360?utm_source=generator&theme=0"
+        height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy" title="My Experience My Color"></iframe>
+      <div class="spotify-track-label">
+        <div class="card-category">Album · Piano</div>
+        <div class="card-title">My Experience, My Color</div>
       </div>
-      <div class="video-label">
-        <div class="card-category">Cinematic</div>
+    </div>
+
+    <div class="spotify-track">
+      <iframe src="https://open.spotify.com/embed/search/%E9%A2%A8%E7%9A%84%E8%A8%98%E6%86%B6%20PlayfulSoundEngineer360?utm_source=generator&theme=0"
+        height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy" title="風的記憶"></iframe>
+      <div class="spotify-track-label">
+        <div class="card-category">Piano Solo</div>
         <div class="card-title">風的記憶</div>
       </div>
     </div>
+
+    <div class="spotify-track">
+      <iframe src="https://open.spotify.com/embed/search/%E5%B1%B1%E4%B8%8D%E8%AA%9E%20PlayfulSoundEngineer360?utm_source=generator&theme=0"
+        height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy" title="山不語"></iframe>
+      <div class="spotify-track-label">
+        <div class="card-category">Series · Ambient</div>
+        <div class="card-title">山不語</div>
+      </div>
+    </div>
+
+    <div class="spotify-track">
+      <iframe src="https://open.spotify.com/embed/search/illusion%20PlayfulSoundEngineer360?utm_source=generator&theme=0"
+        height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy" title="illusion"></iframe>
+      <div class="spotify-track-label">
+        <div class="card-category">Series</div>
+        <div class="card-title">illusion</div>
+      </div>
+    </div>
+
+    <div class="spotify-track">
+      <iframe src="https://open.spotify.com/embed/search/iBelieve%20PlayfulSoundEngineer360?utm_source=generator&theme=0"
+        height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy" title="iBelieve"></iframe>
+      <div class="spotify-track-label">
+        <div class="card-category">Philosophy · Ambient</div>
+        <div class="card-title">iBelieve</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -395,17 +439,7 @@
     wf.appendChild(b);
   }
 
-  // Lazy-load iframes on scroll
-  const iframes = document.querySelectorAll('iframe[data-src]');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.src = e.target.dataset.src;
-        io.unobserve(e.target);
-      }
-    });
-  }, { rootMargin: '200px' });
-  iframes.forEach(f => io.observe(f));
+
 </script>
 </body>
 </html>
