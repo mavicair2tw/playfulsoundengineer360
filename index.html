@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>William Chen — PlayfulSoundEngineer360</title>
+<meta name="description" content="William Chen — aerial photographer, abstract artist, and musician. Soundscapes, cinematic music, and visual art.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@300;400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #0a0806; --smoke: #1a1612; --ember: #c8902a; --ember-pale: #e8c06a;
+    --ash: #6a6258; --cream: #f0e8d8;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--ink); color: var(--cream); font-family: 'Montserrat', sans-serif; font-weight: 200; overflow-x: hidden; cursor: none; }
+  #cursor { position: fixed; width: 6px; height: 6px; background: var(--ember); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: screen; transition: width .2s, height .2s; }
+  #cursor-ring { position: fixed; width: 32px; height: 32px; border: 0.5px solid rgba(200,144,42,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.12s ease-out; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); opacity: 0.35; pointer-events: none; z-index: 100; }
+
+  /* ── NAV ── */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, rgba(10,8,6,0.92) 0%, transparent 100%); }
+  .nav-logo { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.35em; color: var(--ember-pale); text-transform: uppercase; opacity: 0.9; text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 9px; letter-spacing: 0.22em; color: var(--ash); text-decoration: none; text-transform: uppercase; transition: color 0.3s; font-weight: 300; }
+  .nav-links a:hover { color: var(--ember-pale); }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; background: none; border: none; padding: 4px; }
+  .nav-hamburger span { width: 24px; height: 0.5px; background: var(--ash); display: block; transition: all 0.3s; }
+
+  /* ── HERO ── */
+  #hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 70% 40%, rgba(90,55,10,0.35) 0%, transparent 65%), radial-gradient(ellipse 40% 60% at 20% 70%, rgba(40,25,8,0.5) 0%, transparent 55%), linear-gradient(165deg, #12100d 0%, #0a0806 40%, #0d0b08 100%); }
+  .particle { position: absolute; width: 1px; height: 1px; background: var(--ember); border-radius: 50%; opacity: 0; animation: drift linear infinite; }
+  @keyframes drift { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.2; } 100% { transform: translateY(-120vh) translateX(calc(var(--drift) * 1px)); opacity: 0; } }
+  .horizon { position: absolute; bottom: 35%; left: 0; right: 0; height: 0.5px; background: linear-gradient(to right, transparent, rgba(200,144,42,0.3) 30%, rgba(200,144,42,0.6) 55%, rgba(200,144,42,0.3) 75%, transparent); animation: horizonPulse 6s ease-in-out infinite; }
+  @keyframes horizonPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+  .hero-content { position: relative; z-index: 10; text-align: center; max-width: 860px; padding: 0 2rem; animation: heroReveal 2s ease-out forwards; opacity: 0; }
+  @keyframes heroReveal { 0% { opacity: 0; transform: translateY(24px); } 100% { opacity: 1; transform: translateY(0); } }
+  .eyebrow { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.5em; color: var(--ember); text-transform: uppercase; margin-bottom: 2rem; opacity: 0.85; }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(52px, 8vw, 96px); line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 1.5rem; color: var(--cream); }
+  .hero-title em { font-style: italic; color: var(--ember-pale); }
+  .hero-sub { font-size: 10px; letter-spacing: 0.28em; color: var(--ash); text-transform: uppercase; margin-bottom: 3.5rem; line-height: 2.2; }
+  .hero-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: rgba(240,232,216,0.5); max-width: 560px; margin: 0 auto 4rem; line-height: 1.8; font-weight: 300; }
+  .scroll-cue { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.75rem; animation: fadeInUp 1s 1.5s forwards; opacity: 0; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+  .scroll-line { width: 0.5px; height: 48px; background: linear-gradient(to bottom, var(--ember), transparent); animation: scrollLine 2s ease-in-out infinite; }
+  @keyframes scrollLine { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; } }
+  .scroll-label { font-size: 8px; letter-spacing: 0.3em; color: var(--ash); text-transform: uppercase; }
+
+  /* ── SHARED ── */
+  .divider { display: flex; align-items: center; gap: 1.5rem; padding: 0 3rem; margin: 5rem auto 4rem; max-width: 1200px; opacity: 0.4; }
+  .divider-line { flex: 1; height: 0.5px; background: var(--ash); }
+  .divider-mark { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.3em; color: var(--ember); white-space: nowrap; }
+  .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4rem; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; color: var(--cream); letter-spacing: -0.01em; }
+  .section-title em { font-style: italic; color: var(--ember-pale); }
+  .section-count { font-size: 9px; letter-spacing: 0.3em; color: var(--ash); text-transform: uppercase; }
+
+  /* ── BIO ── */
+  #bio { padding: 0 3rem 8rem; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .bio-label { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.4em; color: var(--ember); text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
+  .bio-text { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; line-height: 1.75; color: rgba(240,232,216,0.75); }
+  .bio-text strong { color: var(--cream); font-weight: 400; }
+  .bio-text em { font-style: italic; color: var(--ember-pale); }
+  .bio-visual { position: relative; height: 420px; }
+  .bio-frame { position: absolute; border: 0.5px solid rgba(200,144,42,0.25); }
+  .bio-frame:nth-child(1) { inset: 0; background: linear-gradient(135deg, rgba(90,55,10,0.15) 0%, rgba(10,8,6,0.6) 100%); }
+  .bio-frame:nth-child(2) { top: 16px; left: 16px; right: -16px; bottom: -16px; border-color: rgba(200,144,42,0.1); z-index: -1; }
+  .bio-inner { position: absolute; inset: 2rem; display: flex; flex-direction: column; justify-content: flex-end; }
+  .bio-inner-label { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: rgba(200,144,42,0.3); letter-spacing: 0.05em; line-height: 1.2; margin-bottom: 1.5rem; font-style: italic; }
+  .bio-roles { display: flex; flex-direction: column; gap: 0.5rem; }
+  .bio-role { font-size: 9px; letter-spacing: 0.35em; color: var(--ash); text-transform: uppercase; display: flex; align-items: center; gap: 1rem; }
+  .bio-role::before { content: ''; width: 24px; height: 0.5px; background: var(--ember); flex-shrink: 0; }
+  .waveform { position: absolute; top: 2rem; right: 2rem; display: flex; align-items: center; gap: 2px; height: 40px; opacity: 0.3; }
+  .wave-bar { width: 2px; background: var(--ember); border-radius: 1px; animation: waveAnim ease-in-out infinite alternate; }
+  @keyframes waveAnim { from { transform: scaleY(0.2); } to { transform: scaleY(1); } }
+
+  /* ── WORKS GRID ── */
+  #works { padding: 0 3rem 6rem; max-width: 1200px; margin: 0 auto; }
+  .works-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; }
+  .work-card { position: relative; background: var(--smoke); overflow: hidden; cursor: none; aspect-ratio: 4/5; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.75rem; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+  .work-card:hover { transform: scale(1.01); z-index: 2; }
+  .work-card:hover .card-overlay { opacity: 0.6; }
+  .work-card:hover .card-line { width: 100%; }
+  .card-bg { position: absolute; inset: 0; opacity: 0.5; transition: opacity 0.5s, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+  .work-card:hover .card-bg { opacity: 0.7; transform: scale(1.03); }
+  .card-bg-1 { background: linear-gradient(160deg, #1a0e05 0%, #3d2208 50%, #0f0a05 100%); }
+  .card-bg-2 { background: linear-gradient(160deg, #060d15 0%, #0e2030 50%, #050c14 100%); }
+  .card-bg-3 { background: linear-gradient(160deg, #0e0a14 0%, #241830 50%, #080610 100%); }
+  .card-bg-4 { background: linear-gradient(160deg, #0a0f0a 0%, #182018 50%, #070c07 100%); }
+  .card-bg-5 { background: linear-gradient(160deg, #140808 0%, #2c1010 50%, #0d0505 100%); }
+  .card-bg-6 { background: linear-gradient(160deg, #0d0d10 0%, #1e1e28 50%, #090910 100%); }
+  .card-shape { position: absolute; border-radius: 50%; filter: blur(40px); pointer-events: none; }
+  .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,8,6,0.95) 0%, rgba(10,8,6,0.3) 60%, transparent 100%); opacity: 0.8; transition: opacity 0.5s; }
+  .card-content { position: relative; z-index: 2; }
+  .card-category { font-size: 8px; letter-spacing: 0.35em; color: var(--ember); text-transform: uppercase; margin-bottom: 0.75rem; opacity: 0.8; }
+  .card-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--cream); line-height: 1.2; margin-bottom: 1rem; }
+  .card-title em { font-style: italic; }
+  .card-line { height: 0.5px; width: 32px; background: var(--ember); transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+  .work-card.featured { grid-column: span 2; aspect-ratio: auto; min-height: 340px; }
+  .featured .card-title { font-size: 32px; }
+
+  /* ── VIDEO SECTION ── */
+  #videos { padding: 0 3rem 8rem; max-width: 1200px; margin: 0 auto; }
+  .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; }
+  .video-item { position: relative; background: var(--smoke); overflow: hidden; }
+  .video-item .video-label { padding: 1.25rem 1.5rem; }
+  .video-item .video-label .card-category { font-size: 8px; letter-spacing: 0.35em; color: var(--ember); text-transform: uppercase; margin-bottom: 0.4rem; opacity: 0.8; }
+  .video-item .video-label .card-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; color: var(--cream); line-height: 1.2; }
+  .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+  .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; filter: brightness(0.9); transition: filter 0.4s; }
+  .video-item:hover .video-wrapper iframe { filter: brightness(1); }
+  .video-placeholder { position: relative; padding-bottom: 56.25%; background: linear-gradient(135deg, #12100d, #1e1810); cursor: none; overflow: hidden; }
+  .video-placeholder:hover .vp-overlay { opacity: 0; }
+  .vp-overlay { position: absolute; inset: 0; background: rgba(10,8,6,0.3); transition: opacity 0.4s; display: flex; align-items: center; justify-content: center; }
+  .vp-play { width: 48px; height: 48px; border: 0.5px solid rgba(200,144,42,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .vp-play::after { content: ''; border-left: 14px solid var(--ember); border-top: 8px solid transparent; border-bottom: 8px solid transparent; margin-left: 4px; }
+  .vp-label { position: absolute; bottom: 1rem; left: 1rem; font-size: 8px; letter-spacing: 0.3em; color: var(--ash); text-transform: uppercase; }
+
+  /* ── TRIBUTE ── */
+  #tribute { padding: 8rem 3rem; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 80px 1fr; gap: 3rem; align-items: start; border-top: 0.5px solid rgba(200,144,42,0.15); border-bottom: 0.5px solid rgba(200,144,42,0.15); }
+  .tribute-index { font-family: 'Cinzel', serif; font-size: 64px; font-weight: 300; color: rgba(200,144,42,0.12); line-height: 1; padding-top: 0.25rem; }
+  .tribute-label { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.45em; color: var(--ember); text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.6; }
+  .tribute-name { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--cream); line-height: 1.05; margin-bottom: 0.5rem; }
+  .tribute-name-zh { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: var(--ember-pale); opacity: 0.6; margin-bottom: 2.5rem; letter-spacing: 0.1em; }
+  .tribute-text { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; line-height: 1.8; color: rgba(240,232,216,0.6); max-width: 640px; }
+  .tribute-years { font-size: 9px; letter-spacing: 0.3em; color: var(--ash); text-transform: uppercase; margin-top: 2.5rem; display: flex; align-items: center; gap: 1rem; }
+  .tribute-years::before { content: ''; width: 48px; height: 0.5px; background: var(--ember); opacity: 0.5; }
+
+  /* ── FOOTER ── */
+  footer { padding: 4rem 3rem; display: flex; justify-content: space-between; align-items: center; border-top: 0.5px solid rgba(106,98,88,0.2); max-width: 1200px; margin: 0 auto; }
+  .footer-logo { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.4em; color: var(--ash); text-transform: uppercase; }
+  .footer-links { display: flex; gap: 2rem; list-style: none; }
+  .footer-links a { font-size: 8px; letter-spacing: 0.25em; color: rgba(106,98,88,0.5); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--ember); }
+  .footer-copy { font-size: 8px; letter-spacing: 0.15em; color: rgba(106,98,88,0.3); text-transform: uppercase; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.5rem; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    #bio { grid-template-columns: 1fr; gap: 3rem; padding: 0 1.5rem 5rem; }
+    .bio-visual { height: 280px; }
+    #works, #videos, #tribute { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .works-grid { grid-template-columns: 1fr 1fr; }
+    .work-card.featured { grid-column: span 2; }
+    .video-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 3rem 1.5rem; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    #tribute { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 5rem; padding-bottom: 5rem; }
+    .tribute-index { font-size: 40px; }
+    .tribute-name { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">PlayfulSoundEngineer<span style="opacity:0.5">360</span></a>
+  <ul class="nav-links">
+    <li><a href="https://www.playfulsoundengineer360.com/ibelieve">iBelieve</a></li>
+    <li><a href="https://www.playfulsoundengineer360.com/cinematic">Cinematic</a></li>
+    <li><a href="https://www.playfulsoundengineer360.com/piano-solo">Piano</a></li>
+    <li><a href="https://www.playfulsoundengineer360.com/podcast">Podcast</a></li>
+    <li><a href="https://www.playfulsoundengineer360.com/epoch-of-life">Epoch of Life</a></li>
+    <li><a href="https://www.playfulsoundengineer360.com/contact">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="horizon"></div>
+  <div class="hero-content">
+    <div class="eyebrow">Aerial · Abstract · Sonic</div>
+    <h1 class="hero-title">William<br><em>Chen</em></h1>
+    <div class="hero-sub">Photographer &nbsp;·&nbsp; Composer &nbsp;·&nbsp; Artist</div>
+    <p class="hero-tagline">Each flight a quiet dialogue with the world above.<br>Each note, a fragment of memory becoming sound.</p>
+  </div>
+  <div class="scroll-cue">
+    <div class="scroll-line"></div>
+    <div class="scroll-label">Descend</div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-mark">The Artist</div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- BIO -->
+<section id="bio">
+  <div>
+    <div class="bio-label">William Chen</div>
+    <p class="bio-text">
+      With <strong>drones and cameras</strong>, he traces <em>invisible lines</em> across the sky — capturing the fleeting dances of light and shadow. With music, those visions weave into soundscapes: fragments of <strong>memory</strong>, longing, and hope.<br><br>
+      Every creation is an <em>offering</em> — a bridge to people he may never meet, and a quiet tribute to his father, Tommy Chen, whose timeless works still guide his vision to see beyond what the eye alone can hold.
+    </p>
+  </div>
+  <div class="bio-visual">
+    <div class="bio-frame">
+      <div class="waveform" id="waveform"></div>
+    </div>
+    <div class="bio-frame"></div>
+    <div class="bio-inner">
+      <div class="bio-inner-label">William Chen</div>
+      <div class="bio-roles">
+        <div class="bio-role">Aerial Photographer</div>
+        <div class="bio-role">Abstract Artist</div>
+        <div class="bio-role">Composer &amp; Musician</div>
+        <div class="bio-role">Sound Engineer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-mark">Works &amp; Worlds</div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- WORKS GRID -->
+<section id="works">
+  <div class="section-header">
+    <h2 class="section-title">Selected <em>Works</em></h2>
+    <span class="section-count">Epoch of Life · My Color · Illusion</span>
+  </div>
+  <div class="works-grid">
+    <div class="work-card featured">
+      <div class="card-bg card-bg-1"></div>
+      <div class="card-shape" style="width:280px;height:280px;background:rgba(180,100,20,0.18);top:-40px;right:-40px;"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-category">Epoch of Life · Series</div>
+        <div class="card-title"><em>Birth of Starlight</em><br>生命的紀元</div>
+        <div class="card-line"></div>
+      </div>
+    </div>
+    <div class="work-card">
+      <div class="card-bg card-bg-2"></div>
+      <div class="card-shape" style="width:160px;height:160px;background:rgba(20,80,140,0.2);bottom:-30px;left:-30px;"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-category">Cinematic</div>
+        <div class="card-title">Awakening<br><em>of the Ocean</em></div>
+        <div class="card-line"></div>
+      </div>
+    </div>
+    <div class="work-card">
+      <div class="card-bg card-bg-3"></div>
+      <div class="card-shape" style="width:120px;height:120px;background:rgba(80,40,140,0.2);top:20px;right:20px;"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-category">My Experience · My Color</div>
+        <div class="card-title"><em>那一年</em><br>春天的光</div>
+        <div class="card-line"></div>
+      </div>
+    </div>
+    <div class="work-card">
+      <div class="card-bg card-bg-4"></div>
+      <div class="card-shape" style="width:100px;height:100px;background:rgba(30,90,30,0.2);bottom:20px;right:20px;"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-category">Piano Solo</div>
+        <div class="card-title">風的<em>記憶</em></div>
+        <div class="card-line"></div>
+      </div>
+    </div>
+    <div class="work-card">
+      <div class="card-bg card-bg-5"></div>
+      <div class="card-shape" style="width:140px;height:140px;background:rgba(140,20,20,0.15);top:-20px;left:50%;"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-category">Cinematic · Series</div>
+        <div class="card-title"><em>Flame of</em><br>Consciousness</div>
+        <div class="card-line"></div>
+      </div>
+    </div>
+    <div class="work-card">
+      <div class="card-bg card-bg-6"></div>
+      <div class="card-shape" style="width:120px;height:120px;background:rgba(40,40,100,0.2);top:30px;left:30px;"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <div class="card-category">Series</div>
+        <div class="card-title">山不語<br><em>illusion</em></div>
+        <div class="card-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-mark">Listen &amp; Watch</div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- VIDEO SECTION — placeholder, YouTube IDs to be added -->
+<section id="videos">
+  <div class="section-header">
+    <h2 class="section-title">Video <em>Works</em></h2>
+    <span class="section-count">YouTube · Cinematic · Epoch of Life</span>
+  </div>
+  <div class="video-grid">
+    <div class="video-item">
+      <div class="video-wrapper">
+        <!-- Replace VIDEO_ID_1 with actual YouTube video ID -->
+        <iframe src="about:blank" data-src="https://www.youtube.com/embed/VIDEO_ID_1?rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Video 1"></iframe>
+      </div>
+      <div class="video-label">
+        <div class="card-category">Epoch of Life</div>
+        <div class="card-title">Birth of Starlight</div>
+      </div>
+    </div>
+    <div class="video-item">
+      <div class="video-wrapper">
+        <!-- Replace VIDEO_ID_2 with actual YouTube video ID -->
+        <iframe src="about:blank" data-src="https://www.youtube.com/embed/VIDEO_ID_2?rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Video 2"></iframe>
+      </div>
+      <div class="video-label">
+        <div class="card-category">Cinematic</div>
+        <div class="card-title">風的記憶</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRIBUTE -->
+<section id="tribute">
+  <div class="tribute-index">∞</div>
+  <div class="tribute-content">
+    <div class="tribute-label">In Memoriam</div>
+    <div class="tribute-name">Tommy Chen</div>
+    <div class="tribute-name-zh">陳道明</div>
+    <p class="tribute-text">Founding member of the Eastern Art Association. Modern abstract painter. The timeless works of my father still echo in these creations — guiding a vision to see beyond what the eye alone can hold.</p>
+    <div class="tribute-years">1931 – 2017 &nbsp;·&nbsp; Modern Abstract Artist · Taiwan</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">PSE<span style="opacity:0.4">360</span></div>
+  <ul class="footer-links">
+    <li><a href="https://www.playfulsoundengineer360.com/ibelieve">iBelieve</a></li>
+    <li><a href="https://www.playfulsoundengineer360.com/epoch-of-life">Epoch of Life</a></li>
+    <li><a href="https://www.playfulsoundengineer360.com/my-experience-my-color">My Color</a></li>
+    <li><a href="https://www.playfulsoundengineer360.com/contact">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 PlayfulSoundEngineer360</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = -100, my = -100, rx = -100, ry = -100;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function animCursor() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  })();
+
+  // Particles
+  const hero = document.getElementById('hero');
+  for (let i = 0; i < 28; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 2 + 0.5;
+    p.style.cssText = `left:${Math.random()*100}%;bottom:${Math.random()*30}%;width:${size}px;height:${size}px;--drift:${(Math.random()-0.5)*200};animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s;opacity:0;`;
+    hero.appendChild(p);
+  }
+
+  // Waveform
+  const wf = document.getElementById('waveform');
+  for (let i = 0; i < 22; i++) {
+    const b = document.createElement('div');
+    b.className = 'wave-bar';
+    const h = Math.random() * 30 + 8;
+    b.style.cssText = `height:${h}px;animation-duration:${Math.random()*1.5+0.5}s;animation-delay:${Math.random()*1}s;`;
+    wf.appendChild(b);
+  }
+
+  // Lazy-load iframes on scroll
+  const iframes = document.querySelectorAll('iframe[data-src]');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.src = e.target.dataset.src;
+        io.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '200px' });
+  iframes.forEach(f => io.observe(f));
+</script>
+</body>
+</html>
